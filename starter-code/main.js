@@ -30,8 +30,8 @@ mongoClient.connect(url, (error, db) => {
                   console.log(result);
                   rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 }
-              })
-              break;
+            });
+            break;
             case "2":
             db.collection('companies').find({}, {name: 1, _id: 0}).toArray((error, result) => {
                 if (error) {
@@ -41,8 +41,8 @@ mongoClient.connect(url, (error, db) => {
                   console.log(result.length);
                   rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 }
-              })
-              break;
+            });
+            break;
             case "3":
             db.collection('companies').find({founded_year: 2004}, {name: 1, _id: 0}).toArray((error, result) => {
                 if (error) {
@@ -52,8 +52,8 @@ mongoClient.connect(url, (error, db) => {
                   console.log(result.length);
                   rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 }
-              })
-              break;
+            });
+            break;
             case "4":
             db.collection('companies').find({$and: [{founded_year: 2004}, {founded_month: 2}]}, {name: 1, founded_year:1, founded_month:1, _id: 0}).toArray((error, result) => {
                 if (error) {
@@ -63,9 +63,8 @@ mongoClient.connect(url, (error, db) => {
                     console.log(result);
                     rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 }
-            })
+            });
             break;
-            // MISSING SORTED ARRAY
             case "5":
             db.collection('companies').find({$and: [{founded_year: 2004}, {founded_month: {$gte: 4}}, {founded_month: {$lte: 6}}]}).project({name: 1, founded_year:1, founded_month:1, _id: 0}).sort({founded_month:1}).toArray((error, result) => {
                 if (error) {
@@ -75,22 +74,27 @@ mongoClient.connect(url, (error, db) => {
                     console.log(result);
                     rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 }
-            })
+            });
             break;
-            // MISSING DISPLAY OF CITY
             case "6":
             db.collection('companies').find({'offices.city': 'Barcelona'}).project({name: 1, 'offices.city':1, _id: 0}).toArray((error, result) => {
                 if (error) {
                     console.log(error);Trigger
                     rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 } else {
-                    console.log(result);
+                    function yeet (){
+                        for (var i=0; i<result.length; i++){
+                            console.log(`${result[i].name} ${result[i].offices[0].city}`)
+                        }
+                    }
+                    yeet()
+                    // console.log(result);
                     rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 }
-            })
+            });
             break;
             case "7":
-            db.collection('companies').find({'offices.city': 'Barcelona'}).project({name: 1, 'offices.city':1, _id: 0}).toArray((error, result) => {
+            db.collection('companies').find({}).project({name: 1, number_of_employees:1, _id: 0}).sort({number_of_employees:-1}).limit(10).toArray((error, result) => {
                 if (error) {
                     console.log(error);Trigger
                     rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
@@ -98,7 +102,105 @@ mongoClient.connect(url, (error, db) => {
                     console.log(result);
                     rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 }
-            })
+            });
+            break;
+            case "8":
+            db.collection('companies').find({name: 'Facebook'}).project({name: 1, number_of_employees:1, _id: 0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    console.log(result);
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "9":
+            db.collection('companies').find({name: 'Facebook'}).project({number_of_employees:1, _id: 0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    console.log(result[0].number_of_employees);
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "10":
+            db.collection('companies').find({name: 'Facebook'}).project({name:1, products:1, _id:0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    products = result[0].products
+                    function yeet (){
+                        for (var i=0; i<products.length; i++){
+                            console.log(products[i].name)
+                        }
+                    }
+                    yeet()
+                    // console.log(result[0].products[0].name)
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "11":
+            db.collection('companies').find({name: 'Facebook'}).project({relationships:1, _id:0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    products = result[0].relationships
+                    function yeet (){
+                        for (var i=0; i<products.length; i++){
+                            console.log(`${products[i].person.first_name} ${products[i].person.last_name} `)
+                        }
+                    }
+                    yeet()
+                    // console.log(result[0].relationships)
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "12":
+            db.collection('companies').find({name: 'Facebook'}).project({relationships:1, _id:0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    products = result[0].relationships
+                    function yeet (){
+                        for (var i=0; i<products.length; i++){
+                            if (products[i].is_past === true)
+                            console.log(`${products[i].person.first_name} ${products[i].person.last_name}`)
+                        }
+                    }
+                    yeet()
+                    // console.log(result[0].products[0].name)
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "13":
+            db.collection('companies').find({'relationships.person.first_name': 'Hyther'}).project({relationships:1, _id:0}).limit(10).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    products = result
+                    function yeet (){
+                        for (var i=0; i<products.length; i++){
+                            // if (products[i].is_past === true)
+                            // console.log(`${products[i].person.first_name} ${products[i].person.last_name}`)
+                            console.log(result[i].relationships);
+                            // console.log( result[i].relationships.forEach(e=>e))
+                        }
+                    }
+                    // yeet()
+                    console.log(result[0].relationships)
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
             break;
             case "0":
               console.log(`👋👋👋👋 😞 \n`);
