@@ -182,22 +182,81 @@ mongoClient.connect(url, (error, db) => {
             });
             break;
             case "13":
-            db.collection('companies').find({'relationships.person.first_name': 'Hyther'}).project({relationships:1, _id:0}).limit(10).toArray((error, result) => {
+            db.collection('companies').find({'relationships.person.permalink': 'david-ebersman'}).project({name:1, _id:0}).toArray((error, result) => {
                 if (error) {
                     console.log(error);Trigger
                     rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 } else {
-                    products = result
+                    console.log(result)
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "14":
+            db.collection('companies').find({name: 'Facebook'}).project({name:1, competitions:1, _id:0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    products = result[0].competitions;
                     function yeet (){
                         for (var i=0; i<products.length; i++){
-                            // if (products[i].is_past === true)
-                            // console.log(`${products[i].person.first_name} ${products[i].person.last_name}`)
-                            console.log(result[i].relationships);
-                            // console.log( result[i].relationships.forEach(e=>e))
+                            console.log(products[i].competitor.name)
                         }
                     }
-                    // yeet()
-                    console.log(result[0].relationships)
+                    yeet()
+                    // console.log(products[0].competitor.name)
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "15":
+            db.collection('companies').find({tag_list: {$regex:'social-networking'}}).project({name:1, tag_list:1, _id:0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    console.log(result)
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "16":
+            db.collection('companies').find({$and: [{tag_list: {$regex:'social-network'}}, {founded_year: {$gte: 2002}}, {founded_year: {$lte: 2016}}]}).project({name:1, founded_year:1, _id:0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    console.log(result)
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "17":
+            db.collection('companies').find({'offices.city': 'London'}).project({name:1, offices:1, _id:0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    products = result;
+                    function yeet (){
+                        for (var i=0; i<products.length; i++){
+                            console.log(`${products[i].name} ${products[i].offices[0].city}`)
+                        }
+                    }
+                    yeet()
+                    // console.log(result)
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                }
+            });
+            break;
+            case "18":
+            db.collection('companies').find({$and: [{tag_list: {$regex:'social-network'}}, {founded_year: {$gte: 2002}}, {founded_year: {$lte: 2016}}, {'offices.city': 'New York'}]}).project({name:1, founded_year:1, _id:0}).toArray((error, result) => {
+                if (error) {
+                    console.log(error);Trigger
+                    rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
+                } else {
+                    console.log(`There are ${result.length} companies with offices in NY founded between 2002 and 2016 that are a social network`)
                     rl.question(`\nType enter to continue: `, (answer) => { mainMenu() });
                 }
             });
